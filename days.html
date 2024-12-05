@@ -1,0 +1,36 @@
+<script>
+
+// a function can read a string in csv format
+//Count days within date ranges in a csv string
+// overlapping date count once only
+
+
+// Example:
+// countDays("01-01-2019,03-01-2019\n02-01-2019,04-01-2019") => 4
+
+function countDays(csv) {
+  var dateRanges = csv.split("\n");
+  var days = 0;
+  var dateMap = {};
+  for (var i = 0; i < dateRanges.length; i++) {
+    var dates = dateRanges[i].split(",");
+    // date format is "DD-MM-YYYY"
+    var startDate = new Date(dates[0].split("/").reverse().join("-"));
+    var endDate = new Date(dates[1].split("/").reverse().join("-"));
+    var currentDate = startDate;
+    while (currentDate <= endDate) {
+      var key = currentDate.toDateString();
+      if (!dateMap[key]) {
+        dateMap[key] = true;
+        days++;
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  }
+  return days;
+}
+
+console.log(countDays("1/1/2019,3/1/2019\n2/1/2019,4/1/2019")); // 4
+
+
+</script>
